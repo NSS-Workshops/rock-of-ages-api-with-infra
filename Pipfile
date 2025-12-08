@@ -16,3 +16,4 @@ psycopg2-binary = "*"  # ← Add this line
 
 [requires]
 python_version = "*"
+
