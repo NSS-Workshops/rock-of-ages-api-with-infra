@@ -9,9 +9,18 @@ def health_check(request):
 
 def get_instance_id():
     try:
-        return requests.get(
-            "http://169.254.169.254/latest/meta-data/instance-id",
+        token = requests.put(
+            "http://169.254.169.254/latest/api/token",
+            headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
             timeout=0.2
         ).text
-    except:
+
+        resp = requests.get(
+            "http://169.254.169.254/latest/meta-data/instance-id",
+            headers={"X-aws-ec2-metadata-token": token},
+            timeout=0.2
+        )
+
+        return resp.text
+    except Exception as e:
         return "unknown"
